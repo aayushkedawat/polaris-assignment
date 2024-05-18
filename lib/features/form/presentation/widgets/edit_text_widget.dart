@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:polairs_assignment/features/form/domain/entities/edit_text_entity.dart';
 
+import '../../../../core/constants/strings.dart';
+
 class EditTextWidget extends StatelessWidget {
   final EditTextEntity editTextEntity;
   final ValueChanged onChanged;
@@ -11,7 +13,7 @@ class EditTextWidget extends StatelessWidget {
   });
   String? validateNonEmptyField(String? text) {
     if (text == null || text.isEmpty) {
-      return 'Please enter ${editTextEntity.label}';
+      return Strings.validationError(editTextEntity.label ?? '');
     }
     return null;
   }

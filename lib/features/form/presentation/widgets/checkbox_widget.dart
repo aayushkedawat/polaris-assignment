@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:polairs_assignment/features/form/domain/entities/checkbox_entity.dart';
 
+import '../../../../core/constants/strings.dart';
+
 class CheckboxWidget extends StatefulWidget {
   final CheckBoxEntity checkBoxEntity;
 
@@ -25,7 +27,7 @@ class _CheckboxWidgetState extends State<CheckboxWidget> {
 
   String? validateNonEmptyField(String? value) {
     if (_selectedValues.isEmpty) {
-      return 'Please select ${widget.checkBoxEntity.label}';
+      return Strings.validationError(widget.checkBoxEntity.label ?? '');
     }
 
     return null;
@@ -79,7 +81,8 @@ class _CheckboxWidgetState extends State<CheckboxWidget> {
           ),
           if (field.hasError)
             Text(
-              field.errorText ?? 'Please select ${widget.checkBoxEntity.label}',
+              field.errorText ??
+                  Strings.validationError(widget.checkBoxEntity.label ?? ''),
               style: TextStyle(
                 color: Colors.red.shade900,
               ),

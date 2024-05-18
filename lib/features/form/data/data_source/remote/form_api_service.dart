@@ -32,47 +32,6 @@ class FormRemoteDataSourceImpl implements FormRemoteDataSource {
     }
   }
 
-  // @override
-  // Future<DataState<Map<String, List<MetaInfoModel>>>> getForm() async {
-  //   try {
-  //     final response = await client.get(Uri.parse(Urls.getFormAPI()));
-
-  //     if (response.statusCode == 200) {
-  //       List<MetaInfoModel> metaInfoModel = [];
-  //       Map<String, dynamic> jsonResponse = jsonDecode(response.body);
-
-  //       List fieldsJson = jsonResponse['fields'];
-
-  //       for (var element in fieldsJson) {
-  //         String componentType = element['component_type'];
-  //         Map<String, dynamic> jsonMetaInfo = element['meta_info'];
-  //         switch (componentType) {
-  //           case 'EditText':
-  //             metaInfoModel.add(EditTextModel.fromJson(jsonMetaInfo));
-  //             break;
-  //           case 'CheckBoxes':
-  //             metaInfoModel.add(CheckBoxModel.fromJson(jsonMetaInfo));
-  //             break;
-  //           case 'DropDown':
-  //             metaInfoModel.add(DropDownModel.fromJson(jsonMetaInfo));
-  //             break;
-  //           case 'RadioGroup':
-  //             metaInfoModel.add(RadioGroupModel.fromJson(jsonMetaInfo));
-  //             break;
-  //           case 'CaptureImages':
-  //             metaInfoModel.add(CaptureImageModel.fromJson(jsonMetaInfo));
-  //             break;
-  //         }
-  //       }
-  //       return DataSuccess({jsonResponse['form_name']: metaInfoModel});
-  //     } else {
-  //       return DataFailed(ServerFaliure(response.body));
-  //     }
-  //   } on http.ClientException catch (ex) {
-  //     return DataFailed(ServerFaliure(ex.message));
-  //   }
-  // }
-
   @override
   Future<DataState<String>> submitForm(List<Map<String, dynamic>> data) async {
     try {
@@ -85,7 +44,7 @@ class FormRemoteDataSourceImpl implements FormRemoteDataSource {
           ),
           body: {'data': jsonEncode(data)});
       if (response.statusCode == 200 || response.statusCode == 201) {
-        return const DataSuccess('Success');
+        return DataSuccess(Strings.dataSubmitSuccessFully);
       } else {
         return DataFailed(ServerFaliure(response.body));
       }

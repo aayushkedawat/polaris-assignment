@@ -85,7 +85,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         ElevatedButton(
                           onPressed: submitData,
-                          child: const Text('Submit'),
+                          child: Text(Strings.submit),
                         )
                       ],
                     ),
@@ -95,11 +95,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: Text(state.error?.message ?? ''),
                   );
                 }
-                // if (state is RemoteFormSubmitted) {
-                //   print('state is RemoteFormSubimit');
-                //   BlocProvider.of<RemoteFormBloc>(context)
-                //       .add(const GetRemoteData());
-                // }
                 return Container();
               },
             ),
@@ -118,7 +113,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
       BlocProvider.of<RemoteFormBloc>(context).add(const GetRemoteData());
     } else {
-      Fluttertoast.showToast(msg: 'Please fill the form correctly');
+      Fluttertoast.showToast(msg: Strings.formError);
     }
   }
 

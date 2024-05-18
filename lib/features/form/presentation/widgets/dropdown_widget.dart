@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:polairs_assignment/features/form/domain/entities/dropdown_entity.dart';
 
+import '../../../../core/constants/strings.dart';
+
 class DropdownWidget extends StatefulWidget {
   final DropDownEntity dropDownEntity;
   final ValueChanged<String> onChanged;
@@ -59,7 +61,7 @@ class _DropdownWidgetState extends State<DropdownWidget> {
 
   String? validateNonEmptyField(String? text) {
     if (text == null || text.isEmpty) {
-      return 'Please select ${widget.dropDownEntity.label}';
+      return Strings.validationError(widget.dropDownEntity.label ?? '');
     }
     return null;
   }

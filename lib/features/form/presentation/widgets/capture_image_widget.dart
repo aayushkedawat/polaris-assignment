@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:polairs_assignment/core/constants/constants.dart';
+import 'package:polairs_assignment/core/constants/strings.dart';
 import 'package:polairs_assignment/features/form/domain/entities/capture_images_entity.dart';
 import 'package:path/path.dart' as path;
 
@@ -62,7 +63,7 @@ class _CaptureImageWidgetState extends State<CaptureImageWidget> {
 
   String? validateImageCaptured() {
     if (widget.captureImageEntity.noOfImagesToCapture > images.length) {
-      return 'Please select all images';
+      return Strings.validationError(widget.captureImageEntity.label ?? '');
     }
     return null;
   }
@@ -105,9 +106,6 @@ class _CaptureImageWidgetState extends State<CaptureImageWidget> {
                         )
                       : Container(
                           color: Colors.grey[200],
-                          child: const Center(
-                            child: Text('Empty Slot'),
-                          ),
                         );
                 },
               ),
@@ -115,7 +113,8 @@ class _CaptureImageWidgetState extends State<CaptureImageWidget> {
           if (field.hasError)
             Text(
               field.errorText ??
-                  'Please select ${widget.captureImageEntity.label}',
+                  Strings.validationError(
+                      widget.captureImageEntity.label ?? ''),
               style: TextStyle(
                 color: Colors.red.shade900,
               ),

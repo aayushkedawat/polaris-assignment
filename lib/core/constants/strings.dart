@@ -9,6 +9,19 @@ class Strings {
   static String dropDownComponentType = 'DropDown';
   static String radioGroupComponentType = 'RadioGroup';
   static String captureImagesComponentType = 'CaptureImages';
+  static String dataSubmitSuccessFully = 'Data submitted successfully';
+  static String dataNotAvailable =
+      'Data not available in local, please connect to internet';
+
+  static String submit = 'Submit';
+  static String formError = 'Please enter all the fields';
+
+  // Dynamic widgets
+
+  static String validationError(formFieldName) =>
+      'Please select $formFieldName';
+  static String validationTextError(formFieldName) =>
+      'Please enter $formFieldName';
 
   // AWS S3 Related
 

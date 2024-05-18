@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../core/constants/strings.dart';
 import '../../domain/entities/radiogroup_entity.dart';
 
 class RadioGroupWidget extends StatefulWidget {
@@ -16,7 +17,7 @@ class _RadioGroupWidgetState extends State<RadioGroupWidget> {
 
   String? validateNonEmptyField(String? value) {
     if (_selectedValue == -1) {
-      return 'Please select ${widget.radioGroupEntity.label}';
+      return Strings.validationError(widget.radioGroupEntity.label ?? '');
     }
 
     return null;
@@ -60,7 +61,7 @@ class _RadioGroupWidgetState extends State<RadioGroupWidget> {
           if (field.hasError)
             Text(
               field.errorText ??
-                  'Please select ${widget.radioGroupEntity.label}',
+                  Strings.validationError(widget.radioGroupEntity.label ?? ''),
               style: TextStyle(
                 color: Colors.red.shade900,
               ),

@@ -60,8 +60,7 @@ class RemoteFormBloc extends Bloc<RemoteFormEvent, RemoteFormState> {
       } else {
         var data = await _getFormFieldsLocalUseCase.execute();
         if (data.isEmpty) {
-          emit(RemoteFormError(const NoDataFaliure(
-              'Data not available in local, please connect to internet')));
+          emit(RemoteFormError(NoDataFaliure(Strings.dataNotAvailable)));
           return;
         }
         List<MetaInfoModel> list = parseJsonToModel(data);
@@ -87,12 +86,12 @@ class RemoteFormBloc extends Bloc<RemoteFormEvent, RemoteFormState> {
         }
         final dataState = await _submitFormUseCase.execute(params: element);
         if (dataState is DataSuccess && dataState.data!.isNotEmpty) {
-          Fluttertoast.showToast(msg: 'Data submitted successfully');
+          Fluttertoast.showToast(msg: Strings.dataSubmitSuccessFully);
         } else if (dataState is DataFailed) {
           emit(RemoteFormError(dataState.exception!));
         }
       } else {
-        Fluttertoast.showToast(msg: 'Data submitted successfully');
+        Fluttertoast.showToast(msg: Strings.dataSubmitSuccessFully);
         await _addFormDataLocalUseCase.execute(params: event.formDataMap.first);
       }
     });

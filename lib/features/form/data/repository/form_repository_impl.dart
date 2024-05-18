@@ -5,7 +5,6 @@ import 'package:polairs_assignment/features/form/data/data_source/local/form_loc
 import 'package:polairs_assignment/features/form/data/data_source/remote/form_api_service.dart';
 
 import '../../../../core/resources/data_state.dart';
-import '../../domain/entities/form_field_entity.dart';
 import '../../domain/repository/form_repository.dart';
 
 class FormRepositoryImpl implements FormRepository {
