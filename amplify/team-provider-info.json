@@ -1,0 +1,26 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-polarisassignmentak-dev-65d22-authRole",
+      "UnauthRoleArn": "arn:aws:iam::099397160766:role/amplify-polarisassignmentak-dev-65d22-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::099397160766:role/amplify-polarisassignmentak-dev-65d22-authRole",
+      "Region": "ap-south-1",
+      "DeploymentBucketName": "amplify-polarisassignmentak-dev-65d22-deployment",
+      "UnauthRoleName": "amplify-polarisassignmentak-dev-65d22-unauthRole",
+      "StackName": "amplify-polarisassignmentak-dev-65d22",
+      "StackId": "arn:aws:cloudformation:ap-south-1:099397160766:stack/amplify-polarisassignmentak-dev-65d22/df4f73b0-1475-11ef-aafa-0a56a145a2b5",
+      "AmplifyAppId": "d1lca8khqlci1f"
+    },
+    "categories": {
+      "auth": {
+        "polarisassignmentak21fd2db7": {}
+      },
+      "storage": {
+        "polarisassignmentak96ba2c95": {
+          "bucketName": "polaris-assignment-aayush",
+          "region": "ap-south-1"
+        }
+      }
+    }
+  }
+}
