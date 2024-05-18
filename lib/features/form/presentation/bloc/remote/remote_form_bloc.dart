@@ -70,28 +70,33 @@ class RemoteFormBloc extends Bloc<RemoteFormEvent, RemoteFormState> {
       // emit(const RemoteFormLoading());
       var element = event.formDataMap;
 
-      if (element.first.containsKey(Strings.imagesLocalUpload)) {
-        Map<String, dynamic> imageFolderFiles =
-            element.first[Strings.imagesLocalUpload];
+      if (await ConnectivityCheck.isConnected()) {
+        if (element.first.containsKey(Strings.imagesLocalUpload)) {
+          Map<String, dynamic> imageFolderFiles =
+              element.first[Strings.imagesLocalUpload];
 
-        imageFolderFiles.forEach((key, value) {
-          (List<String>.from(value)).forEach((url) async {
-            await _awsUseCase.execute(params: [url, key]);
+          imageFolderFiles.forEach((key, value) {
+            (List<String>.from(value)).forEach((url) async {
+              await _awsUseCase.execute(params: [url, key]);
+            });
           });
-        });
-      }
-      final dataState = await _submitFormUseCase.execute(params: element);
-      if (dataState is DataSuccess && dataState.data!.isNotEmpty) {
+        }
+        final dataState = await _submitFormUseCase.execute(params: element);
+        if (dataState is DataSuccess && dataState.data!.isNotEmpty) {
+          Fluttertoast.showToast(msg: 'Data submitted successfully');
+        } else if (dataState is DataFailed) {
+          emit(RemoteFormError(dataState.exception!));
+        }
+      } else {
         Fluttertoast.showToast(msg: 'Data submitted successfully');
-      } else if (dataState is DataFailed) {
-        emit(RemoteFormError(dataState.exception!));
+        await _addFormDataLocalUseCase.execute(params: event.formDataMap.first);
       }
     });
 
-    on<AddLocalData>((event, emit) async {
-      await _addFormDataLocalUseCase.execute(params: event.data);
-      // emit(const LocalDataAdded());
-    });
+    // on<AddLocalData>((event, emit) async {
+    //   await _addFormDataLocalUseCase.execute(params: event.data);
+    //   // emit(const LocalDataAdded());
+    // });
     on<GetLocalData>((event, emit) async {
       List<Map<String, dynamic>> data =
           await _getFormDataLocalUseCase.execute();

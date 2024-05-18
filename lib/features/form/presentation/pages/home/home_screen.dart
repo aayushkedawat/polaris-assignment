@@ -12,8 +12,6 @@ import 'package:polairs_assignment/features/form/domain/entities/form_field_enti
 import 'package:polairs_assignment/features/form/presentation/bloc/form_data/form_data_bloc.dart';
 import 'package:polairs_assignment/features/form/presentation/bloc/form_data/form_data_event.dart';
 import 'package:polairs_assignment/features/form/presentation/bloc/form_data/form_data_state.dart';
-import 'package:polairs_assignment/features/form/presentation/bloc/local/local_form_bloc.dart';
-import 'package:polairs_assignment/features/form/presentation/bloc/local/local_form_event.dart';
 import 'package:polairs_assignment/features/form/presentation/bloc/remote/remote_form_bloc.dart';
 import 'package:polairs_assignment/features/form/presentation/bloc/remote/remote_form_event.dart';
 import 'package:polairs_assignment/features/form/presentation/bloc/remote/remote_form_state.dart';
@@ -117,24 +115,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void submitData() async {
     if (_formKey.currentState?.validate() ?? false) {
-      if (await ConnectivityCheck.isConnected()) {
-        if (!mounted) {
-          return;
-        }
-        BlocProvider.of<RemoteFormBloc>(context)
-            .add(SubmitRemoteData([formResponses]));
-      } else {
-        if (!mounted) {
-          return;
-        }
-        print('======>>> local');
-        BlocProvider.of<RemoteFormBloc>(context)
-            .add(AddLocalData(formResponses));
-        // _formKey.currentState!.reset();
-      }
-      setState(() {
-        formResponses = {};
-      });
+      BlocProvider.of<RemoteFormBloc>(context)
+          .add(SubmitRemoteData([formResponses]));
+
+      formResponses = {};
+
       BlocProvider.of<RemoteFormBloc>(context).add(const GetRemoteData());
     } else {
       Fluttertoast.showToast(msg: 'Please fill the form correctly');
