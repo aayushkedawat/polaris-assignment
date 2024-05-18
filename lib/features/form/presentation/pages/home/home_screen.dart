@@ -134,11 +134,15 @@ class _HomeScreenState extends State<HomeScreen> {
           BlocProvider.of<FormDataBloc>(context)
               .add(AddFormDataEvent(key: key, value: value['aws']));
           List<String> alreadyImagePath = [];
-          if (formResponses[metaInfo.savingFolder] != null) {
-            alreadyImagePath = formResponses[metaInfo.savingFolder];
+          if (formResponses[Strings.imagesLocalUpload] != null) {
+            if (formResponses[Strings.imagesLocalUpload]
+                    [metaInfo.savingFolder] !=
+                null) {
+              alreadyImagePath = formResponses[Strings.imagesLocalUpload]
+                  [metaInfo.savingFolder];
+            }
           }
           alreadyImagePath.addAll((value['local'] as List<String>));
-
           BlocProvider.of<FormDataBloc>(context).add(AddFormDataEvent(
               key: Strings.imagesLocalUpload,
               value: {metaInfo.savingFolder: alreadyImagePath}));
