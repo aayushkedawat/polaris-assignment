@@ -66,7 +66,6 @@ class MyApp extends StatelessWidget {
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               if (!snapshot.data!.contains(ConnectivityResult.none)) {
-                print('syncing data');
                 sl<RemoteFormBloc>().add(const SyncData());
                 return const HomeScreen();
               }

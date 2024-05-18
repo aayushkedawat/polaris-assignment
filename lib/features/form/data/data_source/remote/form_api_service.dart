@@ -84,7 +84,6 @@ class FormRemoteDataSourceImpl implements FormRemoteDataSource {
             Urls.submitFormAPI(),
           ),
           body: {'data': jsonEncode(data)});
-      print(response.body);
       if (response.statusCode == 200 || response.statusCode == 201) {
         return const DataSuccess('Success');
       } else {

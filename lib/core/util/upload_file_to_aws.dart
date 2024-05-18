@@ -13,9 +13,6 @@ class UploadFileToAwsImpl {
     try {
       String imageKey = path.basename(image.path);
       StorageUploadFileOptions options = const StorageUploadFileOptions();
-      print('=====>>');
-      print(imageKey);
-      print('=====>>');
       Amplify.Storage.uploadFile(
           path: StoragePath.fromString('public/$folderPath/$imageKey'),
           localFile: AWSFile.fromPath(image.absolute.path),

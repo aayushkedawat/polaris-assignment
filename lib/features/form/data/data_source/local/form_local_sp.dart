@@ -2,13 +2,6 @@ import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../models/capture_images_model.dart';
-import '../../models/checkbox_model.dart';
-import '../../models/dropdown_model.dart';
-import '../../models/edit_text_model.dart';
-import '../../models/meta_info_model.dart';
-import '../../models/radiogroup_model.dart';
-
 class FormDataLocalSharedPrefs {
   SharedPreferences sharedPreferences;
 

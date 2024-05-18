@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:polairs_assignment/core/constants/strings.dart';
-import 'package:polairs_assignment/core/util/connectivity_check.dart';
 import 'package:polairs_assignment/features/form/data/models/capture_images_model.dart';
 import 'package:polairs_assignment/features/form/data/models/checkbox_model.dart';
 import 'package:polairs_assignment/features/form/data/models/dropdown_model.dart';
@@ -57,9 +56,6 @@ class _HomeScreenState extends State<HomeScreen> {
             key: _formKey,
             child: BlocBuilder<RemoteFormBloc, RemoteFormState>(
               builder: (context, state) {
-                print('------>');
-                print(state);
-                print('------>');
                 if (state is FormInitial) {
                   return Container();
                 } else if (state is FormLoading) {

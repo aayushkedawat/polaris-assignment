@@ -49,7 +49,6 @@ class RemoteFormBloc extends Bloc<RemoteFormEvent, RemoteFormState> {
         final dataState = await _getFormUseCase.execute();
 
         if (dataState is DataSuccess && dataState.data!.isNotEmpty) {
-          print('dataState.data ${dataState.data}');
           await _addFormFieldsUseCase.execute(params: dataState.data);
           List<MetaInfoModel> list = parseJsonToModel(dataState.data!);
 
@@ -62,7 +61,6 @@ class RemoteFormBloc extends Bloc<RemoteFormEvent, RemoteFormState> {
         List<MetaInfoModel> list = parseJsonToModel(data);
 
         emit(FormLoaded(list, data['form_name']));
-        print('data $data');
       }
     });
 
