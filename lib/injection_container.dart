@@ -6,7 +6,7 @@ import 'package:polairs_assignment/features/form/domain/repository/form_reposito
 import 'package:polairs_assignment/features/form/domain/usecase/clear_local_data_usecase.dart';
 import 'package:polairs_assignment/features/form/domain/usecase/get_form_usecase.dart';
 import 'package:polairs_assignment/features/form/presentation/bloc/form_data/form_data_bloc.dart';
-import 'package:polairs_assignment/features/form/presentation/bloc/remote/remote_form_bloc.dart';
+import 'package:polairs_assignment/features/form/presentation/bloc/remote/form_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'features/form/data/repository/form_repository_impl.dart';

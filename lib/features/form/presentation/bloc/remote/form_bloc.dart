@@ -6,6 +6,7 @@ import 'package:polairs_assignment/features/form/domain/usecase/get_form_usecase
 import 'package:polairs_assignment/features/form/domain/usecase/submit_form_data_usecase.dart';
 import 'package:polairs_assignment/features/form/domain/usecase/upload_file_aws_usecase.dart';
 import '../../../../../core/constants/strings.dart';
+import '../../../../../core/error/faliure.dart';
 import '../../../../../core/resources/data_state.dart';
 import '../../../data/models/capture_images_model.dart';
 import '../../../data/models/checkbox_model.dart';
@@ -17,8 +18,8 @@ import '../../../domain/usecase/add_form_data_local_usecase.dart';
 import '../../../domain/usecase/add_form_fields_local_usecase.dart';
 import '../../../domain/usecase/clear_local_data_usecase.dart';
 import '../../../domain/usecase/get_form_data_local_usecase.dart';
-import 'remote_form_event.dart';
-import 'remote_form_state.dart';
+import 'form_event.dart';
+import 'form_state.dart';
 
 class RemoteFormBloc extends Bloc<RemoteFormEvent, RemoteFormState> {
   final GetFormUseCase _getFormUseCase;
@@ -58,6 +59,11 @@ class RemoteFormBloc extends Bloc<RemoteFormEvent, RemoteFormState> {
         }
       } else {
         var data = await _getFormFieldsLocalUseCase.execute();
+        if (data.isEmpty) {
+          emit(RemoteFormError(const NoDataFaliure(
+              'Data not available in local, please connect to internet')));
+          return;
+        }
         List<MetaInfoModel> list = parseJsonToModel(data);
 
         emit(FormLoaded(list, data['form_name']));

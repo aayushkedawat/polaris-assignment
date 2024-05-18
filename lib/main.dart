@@ -8,11 +8,11 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:polairs_assignment/features/form/presentation/pages/home/home_screen.dart';
 import 'amplifyconfiguration.dart';
 import 'features/form/presentation/bloc/form_data/form_data_bloc.dart';
-import 'features/form/presentation/bloc/remote/remote_form_bloc.dart';
+import 'features/form/presentation/bloc/remote/form_bloc.dart';
 
 import 'package:polairs_assignment/features/splash/splash_screen.dart';
 
-import 'features/form/presentation/bloc/remote/remote_form_event.dart';
+import 'features/form/presentation/bloc/remote/form_event.dart';
 import 'injection_container.dart';
 
 void main() async {

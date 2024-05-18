@@ -12,8 +12,8 @@ class ServerFaliure extends Faliure {
   const ServerFaliure(super.message);
 }
 
-class NoQueryFaliure extends Faliure {
-  const NoQueryFaliure(super.message);
+class NoDataFaliure extends Faliure {
+  const NoDataFaliure(super.message);
 }
 
 class ConnectionFaliure extends Faliure {

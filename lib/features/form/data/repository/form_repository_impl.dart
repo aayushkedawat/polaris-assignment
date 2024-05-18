@@ -49,7 +49,7 @@ class FormRepositoryImpl implements FormRepository {
 
   @override
   Map<String, dynamic> getFormFieldsFromLocal() {
-    return _formDataLocalSharedPrefs.getLocalFormFields()!;
+    return _formDataLocalSharedPrefs.getLocalFormFields() ?? {};
   }
 
   @override

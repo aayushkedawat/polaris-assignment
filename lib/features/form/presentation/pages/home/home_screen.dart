@@ -11,9 +11,9 @@ import 'package:polairs_assignment/features/form/domain/entities/form_field_enti
 import 'package:polairs_assignment/features/form/presentation/bloc/form_data/form_data_bloc.dart';
 import 'package:polairs_assignment/features/form/presentation/bloc/form_data/form_data_event.dart';
 import 'package:polairs_assignment/features/form/presentation/bloc/form_data/form_data_state.dart';
-import 'package:polairs_assignment/features/form/presentation/bloc/remote/remote_form_bloc.dart';
-import 'package:polairs_assignment/features/form/presentation/bloc/remote/remote_form_event.dart';
-import 'package:polairs_assignment/features/form/presentation/bloc/remote/remote_form_state.dart';
+import 'package:polairs_assignment/features/form/presentation/bloc/remote/form_bloc.dart';
+import 'package:polairs_assignment/features/form/presentation/bloc/remote/form_event.dart';
+import 'package:polairs_assignment/features/form/presentation/bloc/remote/form_state.dart';
 import 'package:polairs_assignment/features/form/presentation/widgets/capture_image_widget.dart';
 import 'package:polairs_assignment/features/form/presentation/widgets/edit_text_widget.dart';
 import 'package:polairs_assignment/features/form/presentation/widgets/radiogroup_widget.dart';
