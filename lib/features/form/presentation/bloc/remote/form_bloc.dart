@@ -91,8 +91,16 @@ class RemoteFormBloc extends Bloc<RemoteFormEvent, RemoteFormState> {
           emit(RemoteFormError(dataState.exception!));
         }
       } else {
-        Fluttertoast.showToast(msg: Strings.dataSubmitSuccessFully);
         await _addFormDataLocalUseCase.execute(params: event.formDataMap.first);
+        var data = await _getFormFieldsLocalUseCase.execute();
+        if (data.isEmpty) {
+          emit(RemoteFormError(NoDataFaliure(Strings.dataNotAvailable)));
+          return;
+        }
+        List<MetaInfoModel> list = parseJsonToModel(data);
+
+        emit(FormLoaded(list, data['form_name']));
+        Fluttertoast.showToast(msg: Strings.dataSubmitSuccessFully);
       }
     });
 
