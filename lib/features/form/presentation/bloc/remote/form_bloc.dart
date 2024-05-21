@@ -5,6 +5,7 @@ import 'package:polairs_assignment/features/form/domain/usecase/get_form_fields_
 import 'package:polairs_assignment/features/form/domain/usecase/get_form_usecase.dart';
 import 'package:polairs_assignment/features/form/domain/usecase/submit_form_data_usecase.dart';
 import 'package:polairs_assignment/features/form/domain/usecase/upload_file_aws_usecase.dart';
+import '../../../../../background_sync.dart';
 import '../../../../../core/constants/strings.dart';
 import '../../../../../core/error/faliure.dart';
 import '../../../../../core/resources/data_state.dart';
@@ -51,55 +52,59 @@ class RemoteFormBloc extends Bloc<RemoteFormEvent, RemoteFormState> {
 
         if (dataState is DataSuccess && dataState.data!.isNotEmpty) {
           await _addFormFieldsUseCase.execute(params: dataState.data);
-          List<MetaInfoModel> list = parseJsonToModel(dataState.data!);
+          List<MetaInfoModel> fieldList = parseJsonToModel(dataState.data!);
 
-          emit(FormLoaded(list, dataState.data!['form_name']));
+          emit(FormLoaded(fieldList, dataState.data!['form_name']));
         } else if (dataState is DataFailed) {
           emit(RemoteFormError(dataState.exception!));
         }
       } else {
-        var data = await _getFormFieldsLocalUseCase.execute();
-        if (data.isEmpty) {
+        var fieldListJson = await _getFormFieldsLocalUseCase.execute();
+        if (fieldListJson.isEmpty) {
           emit(RemoteFormError(NoDataFaliure(Strings.dataNotAvailable)));
           return;
         }
-        List<MetaInfoModel> list = parseJsonToModel(data);
+        List<MetaInfoModel> fieldList = parseJsonToModel(fieldListJson);
 
-        emit(FormLoaded(list, data['form_name']));
+        emit(FormLoaded(fieldList, fieldListJson['form_name']));
       }
     });
 
     on<SubmitRemoteData>((event, emit) async {
-      // emit(const RemoteFormLoading());
-      var element = event.formDataMap;
+      emit(const FormLoading());
+      await Future.delayed(const Duration(milliseconds: 500));
+      var formDataList = event.formDataMap;
+      print('---->> $formDataList');
 
       if (await ConnectivityCheck.isConnected()) {
-        if (element.first.containsKey(Strings.imagesLocalUpload)) {
+        if (formDataList.first.containsKey(Strings.imagesLocalUpload)) {
           Map<String, dynamic> imageFolderFiles =
-              element.first[Strings.imagesLocalUpload];
+              formDataList.first[Strings.imagesLocalUpload];
 
-          imageFolderFiles.forEach((key, value) {
-            (List<String>.from(value)).forEach((url) async {
-              await _awsUseCase.execute(params: [url, key]);
+          imageFolderFiles.forEach((folderName, value) {
+            (List<String>.from(value)).forEach((imagePath) async {
+              await _awsUseCase.execute(params: [imagePath, folderName]);
             });
           });
         }
-        final dataState = await _submitFormUseCase.execute(params: element);
+        final dataState =
+            await _submitFormUseCase.execute(params: formDataList);
         if (dataState is DataSuccess && dataState.data!.isNotEmpty) {
           Fluttertoast.showToast(msg: Strings.dataSubmitSuccessFully);
         } else if (dataState is DataFailed) {
           emit(RemoteFormError(dataState.exception!));
         }
       } else {
+        print(event.formDataMap.first);
         await _addFormDataLocalUseCase.execute(params: event.formDataMap.first);
-        var data = await _getFormFieldsLocalUseCase.execute();
-        if (data.isEmpty) {
+        var formFieldMapLocal = await _getFormFieldsLocalUseCase.execute();
+        if (formFieldMapLocal.isEmpty) {
           emit(RemoteFormError(NoDataFaliure(Strings.dataNotAvailable)));
           return;
         }
-        List<MetaInfoModel> list = parseJsonToModel(data);
+        List<MetaInfoModel> fieldList = parseJsonToModel(formFieldMapLocal);
 
-        emit(FormLoaded(list, data['form_name']));
+        emit(FormLoaded(fieldList, formFieldMapLocal['form_name']));
         Fluttertoast.showToast(msg: Strings.dataSubmitSuccessFully);
       }
     });
@@ -109,15 +114,15 @@ class RemoteFormBloc extends Bloc<RemoteFormEvent, RemoteFormState> {
     //   // emit(const LocalDataAdded());
     // });
     on<GetLocalData>((event, emit) async {
-      List<Map<String, dynamic>> data =
+      List<Map<String, dynamic>> formFieldMapLocal =
           await _getFormDataLocalUseCase.execute();
-      emit(LocalDataLoaded(data));
+      emit(LocalDataLoaded(formFieldMapLocal));
     });
     on<SyncData>((event, emit) async {
-      List<Map<String, dynamic>> data =
+      List<Map<String, dynamic>> formDataMapLocal =
           await _getFormDataLocalUseCase.execute();
-      if (data.isNotEmpty) {
-        for (var element in data) {
+      if (formDataMapLocal.isNotEmpty) {
+        for (var element in formDataMapLocal) {
           if (element.containsKey(Strings.imagesLocalUpload)) {
             Map<String, dynamic> imageFolderFiles =
                 element[Strings.imagesLocalUpload];
@@ -130,9 +135,12 @@ class RemoteFormBloc extends Bloc<RemoteFormEvent, RemoteFormState> {
           }
           await _clearLocalDataUseCase.execute();
           Fluttertoast.showToast(msg: 'Successfully synced data');
+
+          await NotificationService().showNotification(
+              1, 'success', 'Background Sync Complete', false);
         }
-        await _submitFormUseCase.execute(params: data);
-        emit(LocalDataLoaded(data));
+        await _submitFormUseCase.execute(params: formDataMapLocal);
+        emit(LocalDataLoaded(formDataMapLocal));
       }
     });
   }

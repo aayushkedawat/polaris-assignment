@@ -5,22 +5,46 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:polairs_assignment/features/form/presentation/pages/home/home_screen.dart';
-import 'amplifyconfiguration.dart';
-import 'features/form/presentation/bloc/form_data/form_data_bloc.dart';
-import 'features/form/presentation/bloc/remote/form_bloc.dart';
+import 'package:workmanager/workmanager.dart';
 
+import 'package:polairs_assignment/background_sync.dart';
+import 'package:polairs_assignment/core/resources/data_state.dart';
+import 'package:polairs_assignment/features/form/data/data_source/local/form_local_sp.dart';
+import 'package:polairs_assignment/features/form/domain/usecase/clear_local_data_usecase.dart';
+import 'package:polairs_assignment/features/form/domain/usecase/submit_form_data_usecase.dart';
 import 'package:polairs_assignment/features/splash/splash_screen.dart';
 
+import 'amplifyconfiguration.dart';
+import 'core/constants/strings.dart';
+import 'features/form/domain/usecase/upload_file_aws_usecase.dart';
+import 'features/form/presentation/bloc/form_data/form_data_bloc.dart';
+import 'features/form/presentation/bloc/remote/form_bloc.dart';
 import 'features/form/presentation/bloc/remote/form_event.dart';
 import 'injection_container.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initialiseDependencies();
+
+  // await initializeService();
   await configureAmplify();
+  await NotificationService().initialize();
+  // await BackgroundService().initialize();
+  await Workmanager().initialize(callbackDispatcher, isInDebugMode: true);
+
+  final syncBloc = SyncBloc();
+  syncBloc.scheduleBackgroundSync();
 
   runApp(MyApp());
+}
+
+@pragma('vm:entry-point')
+void callbackDispatcher() {
+  Workmanager().executeTask((task, inputData) async {
+    await initialiseDependencies();
+    await configureAmplify();
+    return await SyncBloc().syncData();
+  });
 }
 
 Future<void> configureAmplify() async {
@@ -56,7 +80,7 @@ class MyApp extends StatelessWidget {
         // ),
       ],
       child: MaterialApp(
-        title: 'Flutter Demo',
+        title: 'Polaris Assignment',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
@@ -67,7 +91,7 @@ class MyApp extends StatelessWidget {
             if (snapshot.hasData) {
               if (!snapshot.data!.contains(ConnectivityResult.none)) {
                 sl<RemoteFormBloc>().add(const SyncData());
-                return const HomeScreen();
+                // return const HomeScreen();
               }
             }
             return const SplashScreen();

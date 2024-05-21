@@ -43,7 +43,11 @@ class FormDataLocalSharedPrefs {
     await sharedPreferences.setString(localFormFieldKey, jsonEncode(form));
   }
 
-  Future<void> clearPrefs() async {
-    await sharedPreferences.clear();
+  Future<void> clearFilledData() async {
+    await sharedPreferences.remove(localFormDataKey);
   }
+
+  // Future<void> clear() async {
+  //   await sharedPreferences.clear();
+  // }
 }

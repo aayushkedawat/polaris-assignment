@@ -43,7 +43,7 @@ class FormRepositoryImpl implements FormRepository {
 
   @override
   Future<void> clearLocalData() async {
-    await _formDataLocalSharedPrefs.clearPrefs();
+    await _formDataLocalSharedPrefs.clearFilledData();
   }
 
   @override
