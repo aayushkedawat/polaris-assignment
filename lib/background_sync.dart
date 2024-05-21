@@ -42,11 +42,11 @@ class SyncBloc {
         if (dataState is DataSuccess && dataState.data!.isNotEmpty) {
           NotificationService().showNotification(
               2, 'Success', dataState.data ?? 'Background sync success', false);
+          await ClearLocalDataUseCase(sl()).execute();
         } else if (dataState is DataFailed) {
           NotificationService()
               .showNotification(2, 'Failed', 'Background sync failed', false);
         }
-        await ClearLocalDataUseCase(sl()).execute();
       }
       return true;
     } else {
