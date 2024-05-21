@@ -8,15 +8,9 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:workmanager/workmanager.dart';
 
 import 'package:polairs_assignment/background_sync.dart';
-import 'package:polairs_assignment/core/resources/data_state.dart';
-import 'package:polairs_assignment/features/form/data/data_source/local/form_local_sp.dart';
-import 'package:polairs_assignment/features/form/domain/usecase/clear_local_data_usecase.dart';
-import 'package:polairs_assignment/features/form/domain/usecase/submit_form_data_usecase.dart';
 import 'package:polairs_assignment/features/splash/splash_screen.dart';
 
 import 'amplifyconfiguration.dart';
-import 'core/constants/strings.dart';
-import 'features/form/domain/usecase/upload_file_aws_usecase.dart';
 import 'features/form/presentation/bloc/form_data/form_data_bloc.dart';
 import 'features/form/presentation/bloc/remote/form_bloc.dart';
 import 'features/form/presentation/bloc/remote/form_event.dart';
