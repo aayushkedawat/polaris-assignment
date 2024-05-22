@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:polairs_assignment/core/constants/strings.dart';
 import 'package:polairs_assignment/core/util/connectivity_check.dart';
-import 'package:polairs_assignment/features/form/data/data_source/local/form_local_sp.dart';
 import 'package:polairs_assignment/features/form/data/models/capture_images_model.dart';
 import 'package:polairs_assignment/features/form/data/models/checkbox_model.dart';
 import 'package:polairs_assignment/features/form/data/models/dropdown_model.dart';
@@ -19,7 +19,6 @@ import 'package:polairs_assignment/features/form/presentation/bloc/remote/form_s
 import 'package:polairs_assignment/features/form/presentation/widgets/capture_image_widget.dart';
 import 'package:polairs_assignment/features/form/presentation/widgets/edit_text_widget.dart';
 import 'package:polairs_assignment/features/form/presentation/widgets/radiogroup_widget.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../widgets/checkbox_widget.dart';
 import '../../widgets/dropdown_widget.dart';
@@ -40,13 +39,19 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     Future.delayed(Duration.zero).then((value) {
       BlocProvider.of<RemoteFormBloc>(context).add(const GetRemoteData());
-      getData();
+      getNotificationPermission();
     });
   }
 
-  getData() async {
-    print((await SharedPreferences.getInstance())
-        .getString(FormDataLocalSharedPrefs.localFormDataKey));
+  getNotificationPermission() async {
+    FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+        FlutterLocalNotificationsPlugin();
+    flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()!
+        .requestNotificationsPermission();
+    // print((await SharedPreferences.getInstance())
+    //     .getString(FormDataLocalSharedPrefs.localFormDataKey));
   }
 
   @override

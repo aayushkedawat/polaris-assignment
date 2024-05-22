@@ -37,7 +37,7 @@ void callbackDispatcher() {
   Workmanager().executeTask((task, inputData) async {
     await initialiseDependencies();
     await configureAmplify();
-    return await SyncBloc().syncData();
+    return SyncBloc().syncData();
   });
 }
 
